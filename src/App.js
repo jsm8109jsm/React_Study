@@ -1,15 +1,11 @@
 //App.js
 
-import './App.css';
-import Hello from './components/Hello';
-import Wrapper from './components/Wrapper';
+import React from 'react';
+import Counter from './components/Counter';
 
 function App() {
   return (
-    <Wrapper>
-      <Hello name="hello" color="red" isSpecial/> {/*isSpecial={true}*/}
-      <Hello name="bye" />
-    </Wrapper>
+    <Counter />
   );
 }
 
