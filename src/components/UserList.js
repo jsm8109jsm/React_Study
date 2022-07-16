@@ -12,24 +12,8 @@ function User({ user }) { //컴포넌트 분리
     )
 }
 
-const UserList = () => {
-    const users = [
-        {
-            id: 1,
-            username: 'jsm',
-            text: 'hello'
-        },
-        {
-            id: 2,
-            username: 'abc',
-            text: 'hi'
-        },
-        {
-            id: 3,
-            username: 'pjh',
-            text: 'bye'
-        }
-    ];
+const UserList = ({users}) => {
+    
     return (
         <div>
             {
