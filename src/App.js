@@ -37,6 +37,9 @@ function App() {
     nextId.current += 1; //이 값이 바뀌어도 컴포넌트가 리렌더링되지 않음
   }
 
+  const onRemove = (id) => {
+    setUsers(users.filter(user => user.id !== id)); //filter 함수를 이용해 특정 id값을 가진 원소 삭제
+  }
 
   const [users, setUsers] = useState([ //users 배열 useState로 변경
     {
@@ -63,7 +66,7 @@ function App() {
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} />
+      <UserList users={users} onRemove={onRemove}/>
     </>
   );
 }

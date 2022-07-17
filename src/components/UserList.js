@@ -2,23 +2,25 @@
 
 import React from 'react'
 
-function User({ user }) { //컴포넌트 분리
+function User({ user, onRemove }) { //컴포넌트 분리
+    const {username, text, id} = user;  //비동기화
     return (
         <div>
             <div>
-                <b>{user.username}</b> <span>({user.text})</span>
+                <b>{username}</b> <span>({text})</span>
+                <button onClick={() => onRemove(id)}>삭제</button>
             </div>
         </div>
     )
 }
 
-const UserList = ({users}) => {
+const UserList = ({users, onRemove}) => {
     
     return (
         <div>
             {
-                users.map((user, index)=>{ //map 함수
-                    return <User user={user} key={index}/> //key를 index로 지정 
+                users.map((user)=>{ //map 함수
+                    return <User user={user} key={user.id} onRemove={onRemove}/>
                 })
             }
         </div>
