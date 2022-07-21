@@ -22,7 +22,7 @@ function App() {
 
   const nextId = useRef(4);
 
-  const onCreate = () => {
+  const onCreate = () => { //생성
     const user = { //새로운 객체 만들기
       id: nextId.current,
       username,
@@ -37,25 +37,36 @@ function App() {
     nextId.current += 1; //이 값이 바뀌어도 컴포넌트가 리렌더링되지 않음
   }
 
-  const onRemove = (id) => {
+  const onRemove = (id) => { //삭제
     setUsers(users.filter(user => user.id !== id)); //filter 함수를 이용해 특정 id값을 가진 원소 삭제
+  }
+
+  const onToggle = (id) => { //수정
+    setUsers(users.map(
+      user => {
+        return user.id === id ? { ...user, active: !user.active } : user //map 함수를 이용해 배열 값 수정, 새로운 객체를 만들어 불변성 유지
+      }
+    ))
   }
 
   const [users, setUsers] = useState([ //users 배열 useState로 변경
     {
       id: 1,
       username: 'jsm',
-      text: 'hello'
+      text: 'hello',
+      active: true
     },
     {
       id: 2,
       username: 'abc',
-      text: 'hi'
+      text: 'hi',
+      active: false
     },
     {
       id: 3,
       username: 'pjh',
-      text: 'bye'
+      text: 'bye',
+      active: false
     }
   ]);
   return (
@@ -66,7 +77,7 @@ function App() {
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} onRemove={onRemove}/>
+      <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
     </>
   );
 }
