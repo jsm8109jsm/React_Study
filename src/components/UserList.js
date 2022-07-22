@@ -1,9 +1,14 @@
 //UserList.js
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function User({ user, onRemove, onToggle }) { //컴포넌트 분리
-    const {username, text, id, active} = user;  //비동기화
+    const { username, text, id, active } = user;  //비동기화
+    
+    useEffect(()=>{
+        console.log(user);
+    })
+
     return (
         <div>
             <div>
@@ -19,13 +24,13 @@ function User({ user, onRemove, onToggle }) { //컴포넌트 분리
     )
 }
 
-const UserList = ({users, onRemove, onToggle}) => {
-    
+const UserList = ({ users, onRemove, onToggle }) => {
+
     return (
         <div>
             {
-                users.map((user)=>{ //map 함수
-                    return <User user={user} key={user.id} onRemove={onRemove} onToggle={onToggle}/>
+                users.map((user) => { //map 함수
+                    return <User user={user} key={user.id} onRemove={onRemove} onToggle={onToggle} />
                 })
             }
         </div>

@@ -8,9 +8,10 @@ function App() {
   const [inputs, setInputs] = useState({ //여러개 input 관리하기 위해서는 객체 사용
     username: '',
     text: '',
+    active: false
   });
 
-  const { username, text } = inputs; //비동기화
+  const { username, text, active } = inputs; //비동기화
 
   const onChange = e => {
     const { name, value } = e.target;
@@ -26,13 +27,15 @@ function App() {
     const user = { //새로운 객체 만들기
       id: nextId.current,
       username,
-      text
+      text,
+      active
     }
     //setUsers([...users, user]); //합치기
     setUsers(users.concat(user)); //concat 함수를 이용해 합치기
     setInputs({
       username: '',
-      text: ''
+      text: '',
+      active: false
     });
     nextId.current += 1; //이 값이 바뀌어도 컴포넌트가 리렌더링되지 않음
   }
