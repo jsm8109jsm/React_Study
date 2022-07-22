@@ -5,10 +5,6 @@ import React, { useEffect } from 'react'
 function User({ user, onRemove, onToggle }) { //컴포넌트 분리
     const { username, text, id, active } = user;  //비동기화
     
-    useEffect(()=>{
-        console.log(user);
-    })
-
     return (
         <div>
             <div>
