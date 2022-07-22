@@ -2,23 +2,24 @@
 
 import React, { useEffect } from 'react'
 
-function User({ user, onRemove, onToggle }) { //컴포넌트 분리
-    const { username, text, id, active } = user;  //비동기화
-    
-    return (
-        <div>
+const User = React.memo( //React.memo
+    function User({ user, onRemove, onToggle }) { //컴포넌트 분리
+        const { username, text, id, active } = user;  //비동기화
+
+        return (
             <div>
-                <b style={{
-                    color: active ? 'green' : 'black',
-                    cursor: 'pointer'
-                }} onClick={() => onToggle(id)}>{username}</b>
-                &nbsp;
-                <span>({text})</span>
-                <button onClick={() => onRemove(id)}>삭제</button>
+                <div>
+                    <b style={{
+                        color: active ? 'green' : 'black',
+                        cursor: 'pointer'
+                    }} onClick={() => onToggle(id)}>{username}</b>
+                    &nbsp;
+                    <span>({text})</span>
+                    <button onClick={() => onRemove(id)}>삭제</button>
+                </div>
             </div>
-        </div>
-    )
-}
+        )
+    })
 
 const UserList = ({ users, onRemove, onToggle }) => {
 
@@ -33,4 +34,4 @@ const UserList = ({ users, onRemove, onToggle }) => {
     )
 }
 
-export default UserList
+export default React.memo(UserList, (prevProps, nextProps) => nextProps.users === prevProps.users); //React.memo, propsAreEqual 함수를 통해 props의 현재 값이 같을 때 리렌더링하지 않게 함
