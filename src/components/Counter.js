@@ -2,7 +2,7 @@
 
 import React, { useReducer } from  'react';
 
-function reducer(state, action){
+function reducer(state, action){ //상태를 관리하는 로직
     switch (action.type){
         case 'INCREMENT':
             return state + 1;
@@ -15,7 +15,7 @@ function reducer(state, action){
 }
 
 export default function Counter() {
-    const [number, dispatch] = useReducer(reducer, 0);
+    const [number, dispatch] = useReducer(reducer, 0); //useReducer
     const onDecrease = () => {
         dispatch({
             type: 'INCREMENT'

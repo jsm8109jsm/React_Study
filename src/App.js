@@ -1,12 +1,21 @@
 //App.js
 
-import React, { useRef, useState, useMemo, useCallback } from 'react';
+import React, { useRef, useReducer, useMemo, useCallback } from 'react';
 import CreateUser from './components/CreateUser';
 import UserList from './components/UserList';
 
-function App() {
+const countActiveUsers = (users) => { //active가 true인 사용자 수 세기
+  console.log('활성 사용자 수를 세는 중...');
+  return users.filter(user => user.active).length;
+}
 
-  const [users, setUsers] = useState([ //users 배열 useState로 변경
+const initialState = {
+  inputs: {
+    username: '',
+    text: '',
+    active: false
+  },
+  users: [
     {
       id: 1,
       username: 'jsm',
@@ -25,71 +34,89 @@ function App() {
       text: 'bye',
       active: false
     }
-  ]);
+  ]
+}
 
-  const [inputs, setInputs] = useState({ //여러개 input 관리하기 위해서는 객체 사용
-    username: '',
-    text: '',
-    active: false
-  });
+function reducer(state, action){
+  switch (action.type){
+    case 'CHANGE_INPUT':
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          [action.name]: action.value
+        }
+      }
+    case 'CREATE_USER':
+      return {
+        inputs: initialState.inputs,
+        users: state.users.concat(action.user)
+      }
+    case 'TOGGLE_USER':
+      return{
+        ...state,
+        users: state.users.map(user =>
+          user.id === action.id ? {...user, active: !user.active} : user
+        )
+      }
+    case 'REMOVE_USER':
+      return{
+        ...state,
+        users: state.users.filter(user => user.id !== action.id)
+      }
+    default:
+      throw new Error('Unhandled action');
+  }
+}
 
-  const { username, text, active } = inputs; //비동기화
+function App() {
+  const nextId = useRef(4);
+  
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const {users} = state;
+  const {username, text} = state.inputs;
 
   const onChange = useCallback(e => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value
-    });
-  }, [inputs]); //useCallback 사용
+    const {name, value} = e.target;
+    dispatch({
+      type: 'CHANGE_INPUT',
+      name,
+      value
+    })
+  }, [])
 
-  const nextId = useRef(4);
-
-  const onCreate = useCallback(() => { //생성
-    const user = { //새로운 객체 만들기
-      id: nextId.current,
-      username,
-      text,
-      active
-    }
-    //setUsers([...users, user]); //합치기
-    setUsers(users => users.concat(user)); //concat 함수를 이용해 합치기, 함수형 업데이트
-    setInputs({
-      username: '',
-      text: '',
-      active: false
-    });
-    nextId.current += 1; //이 값이 바뀌어도 컴포넌트가 리렌더링되지 않음
-  }, [username, text, active]); //useCallback 사용
-
-  const onRemove = useCallback((id) => { //삭제
-    setUsers(users => users.filter(user => user.id !== id)); //filter 함수를 이용해 특정 id값을 가진 원소 삭제, 함수형 업데이트
-  }, []); //useCallback 사용
-
-  const onToggle = useCallback((id) => { //수정
-    setUsers(users => users.map( //함수형 업데이트
-      user => {
-        return user.id === id ? { ...user, active: !user.active } : user //map 함수를 이용해 배열 값 수정, 새로운 객체를 만들어 불변성 유지
+  const onCreate = useCallback(()=>{
+    dispatch({
+      type: 'CREATE_USER',
+      user: {
+        id: nextId.current,
+        username,
+        text
       }
-    ))
-  }, []); //useCallback 사용
+    })
+    nextId.current += 1;
+  }, [username, text])
 
-  const countActiveUsers = (users) => { //active가 true인 사용자 수 세기
-    console.log('활성 사용자 수를 세는 중...');
-    return users.filter(user => user.active).length;
-  }
+  const onToggle = useCallback(id=>{
+    dispatch({
+      type: 'TOGGLE_USER',
+      id
+    })
+  }, [])
 
-  const count = useMemo(() => countActiveUsers(users), [users]); //useMemo를 통해 users 값이 바뀔 때에만 countActiveUsers 실행
+  const onRemove = useCallback(id => {
+    dispatch({
+      type: 'REMOVE_USER',
+      id
+    })
+  }, [])
+
+  const count = useMemo(()=> countActiveUsers(users), [users]);
 
   return (
     <>
-      <CreateUser
-        username={username}
-        text={text}
-        onChange={onChange}
-        onCreate={onCreate}
-      />
-      <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
+      <CreateUser username={username} text={text} onChange={onChange} onCreate={onCreate} />
+      <UserList users={users} onToggle={onToggle} onRemove={onRemove}/>
       <div>활성 사용자 수 : {count}</div>
     </>
   );
