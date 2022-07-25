@@ -61,7 +61,7 @@ function App() {
   const nextId = useRef(4);
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [form, onChange, reset] = useInputs({
+  const [form, onChange, reset] = useInputs({ //커스텀 훅 사용
     username: '',
     email: '',
   });
