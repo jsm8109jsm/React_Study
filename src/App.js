@@ -10,8 +10,6 @@ const countActiveUsers = (users) => { //active가 true인 사용자 수 세기
   return users.filter(user => user.active).length;
 }
 
-window.produce = produce;
-
 const initialState = {
   users: [
     {
@@ -38,22 +36,19 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case 'CREATE_USER':
-      return {
-        inputs: initialState.inputs,
-        users: state.users.concat(action.user)
-      }
+      return produce(state, draft => { //immer
+        draft.users.push(action.user);
+      });
     case 'TOGGLE_USER':
-      return {
-        ...state,
-        users: state.users.map(user =>
-          user.id === action.id ? { ...user, active: !user.active } : user
-        )
-      }
+      return produce(state, draft => { //immer
+        const user = draft.users.find(user => user.id === action.id);
+        user.active = !user.active;
+      });
     case 'REMOVE_USER':
-      return {
-        ...state,
-        users: state.users.filter(user => user.id !== action.id)
-      }
+      return produce(state, draft => { //immer
+        const index = draft.users.findIndex(user => user.id === action.id);
+        draft.users.splice(index, 1);
+      })
     default:
       throw new Error('Unhandled action');
   }
