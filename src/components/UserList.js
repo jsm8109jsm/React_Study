@@ -21,7 +21,9 @@ const User = React.memo( //React.memo
                 </div>
             </div>
         )
-    })
+    }
+)
+
 
 const UserList = ({ users }) => {
 

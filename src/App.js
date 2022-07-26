@@ -1,14 +1,16 @@
 //App.js
 
-import React, { useRef, useReducer, useMemo, useCallback, createContext } from 'react';
+import React, { useReducer, useMemo, createContext } from 'react';
+import produce from 'immer';
 import CreateUser from './components/CreateUser';
 import UserList from './components/UserList';
-import useInputs from './Hooks/useInputs';
 
 const countActiveUsers = (users) => { //active가 true인 사용자 수 세기
   console.log('활성 사용자 수를 세는 중...');
   return users.filter(user => user.active).length;
 }
+
+window.produce = produce;
 
 const initialState = {
   users: [
@@ -60,36 +62,16 @@ function reducer(state, action) {
 export const UserDispatch = createContext(null);
 
 function App() {
-  const nextId = useRef(4);
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [form, onChange, reset] = useInputs({ //커스텀 훅 사용
-    username: '',
-    email: '',
-  });
-  const { username, text } = form;
   const { users } = state;
-
-
-  const onCreate = useCallback(() => {
-    dispatch({
-      type: 'CREATE_USER',
-      user: {
-        id: nextId.current,
-        username,
-        text
-      }
-    })
-    nextId.current += 1;
-    reset();
-  }, [username, text, reset])
 
 
   const count = useMemo(() => countActiveUsers(users), [users]);
 
   return (
     <UserDispatch.Provider value={dispatch}>
-      <CreateUser username={username} text={text} onChange={onChange} onCreate={onCreate} />
+      <CreateUser />
       <UserList users={users} />
       <div>활성 사용자 수 : {count}</div>
     </UserDispatch.Provider>
