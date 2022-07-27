@@ -1,15 +1,21 @@
 //Hello.js
 
-import React from 'react';
+import React, { Component } from 'react';
 
-export default function Hello({color, name, isSpecial}){ //비구조화 할당(객체에서 값을 추출하는 문법)
-	return <div style={{color: color}}>
-        {isSpecial && <b>*</b>}{/*AND 연산자*/}
-        <b>{isSpecial ? '만났을 때' : '헤어질 때'}</b> {/*삼항연산자*/}
-        안녕은 영어로 {name}
-    </div>
+class Hello extends Component {
+    static defaultProps = {
+        name: '이름없음'
+    }
+    render() {
+        const {color, isSpecial, name} = this.props; //비동기화
+        return(
+            <div style={{color}}>
+                {isSpecial && <b>*</b>}
+                안녕은 영어로 {name}
+            </div>
+        )
+    }
 }
 
-Hello.defaultProps = {
-    color: 'blue'
-}
+
+export default Hello;
