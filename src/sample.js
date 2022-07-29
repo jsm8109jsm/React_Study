@@ -1,19 +1,15 @@
-//sample.js
+import React, { Component } from 'react'
 
-const users = [
-    {
-        id: 1,
-        username: 'jsm',
-        text: 'hello'
-    },
-    {
-        id: 2,
-        username: 'abc',
-        text: 'hi'
-    },
-    {
-        id: 3,
-        username: 'pjh',
-        text: 'bye'
+export default class sample extends Component {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("componentDidUpdate", prevProps, prevState);
+        if (snapshot) {
+          console.log("업데이트 되기 직전 색상: ", snapshot);
+        }
+      }
+    render() {
+        return (
+            <div>sample</div>
+        )
     }
-];
+}

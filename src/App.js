@@ -4,6 +4,7 @@ import React, { useReducer, useMemo, createContext } from 'react';
 import produce from 'immer';
 import CreateUser from './components/CreateUser';
 import UserList from './components/UserList';
+import { ErrorBoundary } from '@sentry/react';
 
 const countActiveUsers = (users) => { //active가 true인 사용자 수 세기
   console.log('활성 사용자 수를 세는 중...');
@@ -66,9 +67,11 @@ function App() {
 
   return (
     <UserDispatch.Provider value={dispatch}>
-      <CreateUser />
-      <UserList users={users} />
-      <div>활성 사용자 수 : {count}</div>
+      <ErrorBoundary>
+        <CreateUser />
+        <UserList users={users} />
+        <div>활성 사용자 수 : {count}</div>
+      </ErrorBoundary>
     </UserDispatch.Provider>
   );
 }

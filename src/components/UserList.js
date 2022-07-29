@@ -7,7 +7,6 @@ const User = React.memo( //React.memo
     function User({ user }) { //컴포넌트 분리
         const { username, text, id, active } = user;  //비동기화
         const dispatch = useContext(UserDispatch); //useContext
-
         return (
             <div>
                 <div>
