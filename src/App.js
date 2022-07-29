@@ -61,8 +61,6 @@ function App() {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { users } = state;
-
-
   const count = useMemo(() => countActiveUsers(users), [users]);
 
   return (
