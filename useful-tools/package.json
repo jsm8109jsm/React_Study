@@ -22,9 +22,7 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "airbnb",
-      "prettier"
+      "react-app/jest"
     ],
     "rules": {
       "no-unused-vars": 1,
