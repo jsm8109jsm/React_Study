@@ -4,6 +4,7 @@ import React from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import About from "./components/About";
 import Home from "./components/Home";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/profiles/:username" element={<Profile />} />
       </Routes>
     </div>
   );
