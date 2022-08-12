@@ -2,7 +2,7 @@
 
 import React from "react";
 import Profile from "./Profile";
-import { Link, Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 
 function Profiles() {
   return (
@@ -10,10 +10,20 @@ function Profiles() {
       <h3>사용자 목록</h3>
       <ul>
         <li>
-          <Link to="/profiles/jsm">jsm</Link>
+          <NavLink
+            to="/profiles/jsm"
+            style={{ background: "black", color: "white" }}
+          >
+            jsm
+          </NavLink>
         </li>
         <li>
-          <Link to="/profiles/homer">homer</Link>
+          <NavLink
+            to="/profiles/homer"
+            style={{ background: "black", color: "white" }}
+          >
+            homer
+          </NavLink>
         </li>
       </ul>
 
