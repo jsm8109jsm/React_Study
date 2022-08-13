@@ -1,8 +1,14 @@
+import classNames from "classnames";
 import React from "react";
 import "./Button.scss";
 
-function Button({ children }) {
-  return <button className="Button">{children}</button>;
+// size: large, medium, small
+function Button({ children, size }) {
+  return <button className={classNames("Button", size)}>{children}</button>;
 }
+
+Button.defaultProps = {
+  size: "medium",
+};
 
 export default Button;
